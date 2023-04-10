@@ -1,0 +1,27 @@
+name: app
+description: A new Flutter project.
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.19.6 <3.0.0"
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  demo_theme:
+    path: ../../packages/demo_theme
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.18.6
+  go_router: ^6.5.5
+  hooks_riverpod: ^2.3.4
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
