@@ -1,6 +1,5 @@
+import 'package:demo_ui/src/ui_atoms/status_chip.dart';
 import 'package:flutter/material.dart';
-
-import '../ui_atoms/status_chip.dart';
 
 class LocationCard extends StatelessWidget {
   const LocationCard({
@@ -65,7 +64,7 @@ class LocationCard extends StatelessWidget {
                   StatusChip(status: cardStatus),
                 ],
               ),
-              vGap,
+              if (cardName.isNotEmpty || cardStatus.isNotEmpty) vGap,
               Row(
                 children: [
                   Expanded(
@@ -76,11 +75,14 @@ class LocationCard extends StatelessWidget {
                   ),
                   if (locationName.isNotEmpty) hGap,
                   Text(suburb, style: theme.textTheme.bodyMedium),
-                  hGap,
+                  if (suburb.isNotEmpty) hGap,
                   Text(industry, style: theme.textTheme.bodyMedium),
                 ],
               ),
-              vGap,
+              if (locationName.isNotEmpty ||
+                  suburb.isNotEmpty ||
+                  industry.isNotEmpty)
+                vGap,
               Row(
                 children: [
                   Text(distance, style: theme.textTheme.bodyMedium),
@@ -93,7 +95,7 @@ class LocationCard extends StatelessWidget {
                   ),
                 ],
               ),
-              vGap,
+              if (distance.isNotEmpty || description.isNotEmpty) vGap,
               Row(
                 children: [
                   Text(available, style: theme.textTheme.bodyMedium),

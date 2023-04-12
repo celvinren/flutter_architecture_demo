@@ -7,6 +7,8 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  demo_data_models:
+    path: ../demo_data_models
   demo_theme:
     path: ../demo_theme
   flutter:

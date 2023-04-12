@@ -42,7 +42,7 @@ final mockJob = {
       'jobTypes': [
         {
           'staticDataId': '642145efb92e03f299e74d12',
-          'jobTypeName': 'full time'
+          'jobTypeName': 'full time',
         },
       ],
       'salary': {
