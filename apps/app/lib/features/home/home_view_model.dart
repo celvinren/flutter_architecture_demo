@@ -34,7 +34,7 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
   final TextEditingController searchController = TextEditingController();
 
   int page = 0;
-  int limit = 5;
+  int limit = 15;
   String? searchText;
 
   Future<Failure?> fetchJobs({
@@ -43,13 +43,13 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
     bool? isClean,
   }) async {
     state = state.copyWith(isLoading: true);
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+
     final result = await _jobRepository.fetchJobs(
       searchText: text ?? searchText,
       limit: limit,
-      skip: limit * page,
+      skip: ((isSearching ?? false) && searchText != text) ? 0 : (limit * page),
     );
-
-    await Future<void>.delayed(const Duration(milliseconds: 500));
 
     return result.when(
       left: (final failure) {
@@ -60,8 +60,13 @@ class HomeViewModel extends StateNotifier<HomeViewModelState> {
       right: (final jobs) {
         if ((isSearching ?? false) && searchText != text) {
           state = state.copyWith(jobs: jobs, isLoading: false);
-          page = 0;
+          page = 1;
           searchText = text;
+          listViewController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+          );
         } else {
           final newJobs = (state.jobs?.toList() ?? [])..addAll(jobs);
           state = state.copyWith(

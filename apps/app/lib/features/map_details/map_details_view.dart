@@ -15,7 +15,6 @@ class MapDetailsView extends HookConsumerWidget {
   final Job? job;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final viewModel = ref.watch(mapDetailsViewModelProvider.notifier);
 
     final firstJobLocation = job?.location?.first;

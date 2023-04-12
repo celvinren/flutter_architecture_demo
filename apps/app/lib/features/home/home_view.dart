@@ -17,6 +17,7 @@ class HomeView extends HookConsumerWidget {
     final viewModel = ref.watch(homeViewModelProvider.notifier);
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     const loadingIndicatorColorOpacity = 0.5;
+    const searchBarHeight = 60.0;
 
     Future<void> fetchJobs() async {
       final failure = await viewModel.fetchJobs();
@@ -60,11 +61,25 @@ class HomeView extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('Home'),
         centerTitle: true,
+        bottom: PreferredSize(
+          preferredSize: Size(
+            MediaQuery.of(context).size.width,
+            searchBarHeight,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: SearchTextField(
+              controller: viewModel.searchController,
+              onChanged: searchJobs,
+              onClear: cleanSearching,
+            ),
+          ),
+        ),
       ),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: LocationListView(
               listViewController: viewModel.listViewController,
               jobs: viewModelState.jobs ?? [],
