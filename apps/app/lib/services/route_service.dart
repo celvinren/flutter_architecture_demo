@@ -4,10 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'routes.dart';
 
-final routerServiceProvider = Provider<RouterService>((ref) => RouterService());
+final routerServiceProvider = Provider<RouteService>((ref) => RouteService());
 
-class RouterService {
-  RouterService();
+class RouteService {
+  RouteService();
 
   RouteInformationProvider get routeInformationProvider =>
       _router.routeInformationProvider;
