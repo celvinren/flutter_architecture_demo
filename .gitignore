@@ -147,6 +147,6 @@ build/*
 .codemagic_service_account.json
 
 # Ignore non-CI golden files and failures
-**/test/**/goldens/**/*.*
+!**/test/**/goldens/**/*.*
 **/test/**/failures/**/*.*
 !**/test/**/goldens/ci/*.*
