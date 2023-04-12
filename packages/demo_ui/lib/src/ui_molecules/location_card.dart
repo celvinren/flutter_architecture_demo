@@ -51,6 +51,7 @@ class LocationCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
+        margin: EdgeInsets.zero,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
