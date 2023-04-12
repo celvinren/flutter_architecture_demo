@@ -9,8 +9,6 @@ environment:
 dependencies:
   demo_data_models:
     path: ../demo_data_models
-  demo_theme:
-    path: ../demo_theme
   flutter:
     sdk: flutter
 
@@ -19,6 +17,8 @@ dev_dependencies:
   dart_code_metrics: ^5.7.0
   demo_analysis:
     path: ../demo_analysis
+  demo_theme:
+    path: ../demo_theme
   dependency_validator: ^3.2.2
   flutter_test:
     sdk: flutter

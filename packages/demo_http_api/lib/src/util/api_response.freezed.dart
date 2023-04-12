@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'api_response.dart';
 
@@ -16,6 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ApiResponse<T, U> {
+  Object? get content => throw _privateConstructorUsedError;
   int? get statusCode => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>(
@@ -28,10 +29,10 @@ mixin _$ApiResponse<T, U> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult Function(T? content, int? statusCode, Map<String, String> headers,
+    TResult? Function(T? content, int? statusCode, Map<String, String> headers,
             bool isRedirect, bool persistentConnection)?
         $default, {
-    TResult Function(U? content, int? statusCode, String? message)? error,
+    TResult? Function(U? content, int? statusCode, String? message)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -51,8 +52,8 @@ mixin _$ApiResponse<T, U> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult Function(ApiResponseData<T, U> value)? $default, {
-    TResult Function(ApiResponseError<T, U> value)? error,
+    TResult? Function(ApiResponseData<T, U> value)? $default, {
+    TResult? Function(ApiResponseError<T, U> value)? error,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -72,29 +73,32 @@ mixin _$ApiResponse<T, U> {
 abstract class $ApiResponseCopyWith<T, U, $Res> {
   factory $ApiResponseCopyWith(
           ApiResponse<T, U> value, $Res Function(ApiResponse<T, U>) then) =
-      _$ApiResponseCopyWithImpl<T, U, $Res>;
+      _$ApiResponseCopyWithImpl<T, U, $Res, ApiResponse<T, U>>;
+  @useResult
   $Res call({int? statusCode});
 }
 
 /// @nodoc
-class _$ApiResponseCopyWithImpl<T, U, $Res>
+class _$ApiResponseCopyWithImpl<T, U, $Res, $Val extends ApiResponse<T, U>>
     implements $ApiResponseCopyWith<T, U, $Res> {
   _$ApiResponseCopyWithImpl(this._value, this._then);
 
-  final ApiResponse<T, U> _value;
   // ignore: unused_field
-  final $Res Function(ApiResponse<T, U>) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? statusCode = freezed,
   }) {
     return _then(_value.copyWith(
-      statusCode: statusCode == freezed
+      statusCode: freezed == statusCode
           ? _value.statusCode
           : statusCode // ignore: cast_nullable_to_non_nullable
               as int?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -105,6 +109,7 @@ abstract class _$$ApiResponseDataCopyWith<T, U, $Res>
           $Res Function(_$ApiResponseData<T, U>) then) =
       __$$ApiResponseDataCopyWithImpl<T, U, $Res>;
   @override
+  @useResult
   $Res call(
       {T? content,
       int? statusCode,
@@ -115,41 +120,39 @@ abstract class _$$ApiResponseDataCopyWith<T, U, $Res>
 
 /// @nodoc
 class __$$ApiResponseDataCopyWithImpl<T, U, $Res>
-    extends _$ApiResponseCopyWithImpl<T, U, $Res>
+    extends _$ApiResponseCopyWithImpl<T, U, $Res, _$ApiResponseData<T, U>>
     implements _$$ApiResponseDataCopyWith<T, U, $Res> {
   __$$ApiResponseDataCopyWithImpl(_$ApiResponseData<T, U> _value,
       $Res Function(_$ApiResponseData<T, U>) _then)
-      : super(_value, (v) => _then(v as _$ApiResponseData<T, U>));
+      : super(_value, _then);
 
-  @override
-  _$ApiResponseData<T, U> get _value => super._value as _$ApiResponseData<T, U>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? content = freezed,
     Object? statusCode = freezed,
-    Object? headers = freezed,
-    Object? isRedirect = freezed,
-    Object? persistentConnection = freezed,
+    Object? headers = null,
+    Object? isRedirect = null,
+    Object? persistentConnection = null,
   }) {
     return _then(_$ApiResponseData<T, U>(
-      content: content == freezed
+      content: freezed == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as T?,
-      statusCode: statusCode == freezed
+      statusCode: freezed == statusCode
           ? _value.statusCode
           : statusCode // ignore: cast_nullable_to_non_nullable
               as int?,
-      headers: headers == freezed
+      headers: null == headers
           ? _value._headers
           : headers // ignore: cast_nullable_to_non_nullable
               as Map<String, String>,
-      isRedirect: isRedirect == freezed
+      isRedirect: null == isRedirect
           ? _value.isRedirect
           : isRedirect // ignore: cast_nullable_to_non_nullable
               as bool,
-      persistentConnection: persistentConnection == freezed
+      persistentConnection: null == persistentConnection
           ? _value.persistentConnection
           : persistentConnection // ignore: cast_nullable_to_non_nullable
               as bool,
@@ -175,6 +178,7 @@ class _$ApiResponseData<T, U> implements ApiResponseData<T, U> {
   final Map<String, String> _headers;
   @override
   Map<String, String> get headers {
+    if (_headers is EqualUnmodifiableMapView) return _headers;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableMapView(_headers);
   }
@@ -195,26 +199,27 @@ class _$ApiResponseData<T, U> implements ApiResponseData<T, U> {
         (other.runtimeType == runtimeType &&
             other is _$ApiResponseData<T, U> &&
             const DeepCollectionEquality().equals(other.content, content) &&
-            const DeepCollectionEquality()
-                .equals(other.statusCode, statusCode) &&
+            (identical(other.statusCode, statusCode) ||
+                other.statusCode == statusCode) &&
             const DeepCollectionEquality().equals(other._headers, _headers) &&
-            const DeepCollectionEquality()
-                .equals(other.isRedirect, isRedirect) &&
-            const DeepCollectionEquality()
-                .equals(other.persistentConnection, persistentConnection));
+            (identical(other.isRedirect, isRedirect) ||
+                other.isRedirect == isRedirect) &&
+            (identical(other.persistentConnection, persistentConnection) ||
+                other.persistentConnection == persistentConnection));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(content),
-      const DeepCollectionEquality().hash(statusCode),
+      statusCode,
       const DeepCollectionEquality().hash(_headers),
-      const DeepCollectionEquality().hash(isRedirect),
-      const DeepCollectionEquality().hash(persistentConnection));
+      isRedirect,
+      persistentConnection);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$ApiResponseDataCopyWith<T, U, _$ApiResponseData<T, U>> get copyWith =>
       __$$ApiResponseDataCopyWithImpl<T, U, _$ApiResponseData<T, U>>(
           this, _$identity);
@@ -235,10 +240,10 @@ class _$ApiResponseData<T, U> implements ApiResponseData<T, U> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult Function(T? content, int? statusCode, Map<String, String> headers,
+    TResult? Function(T? content, int? statusCode, Map<String, String> headers,
             bool isRedirect, bool persistentConnection)?
         $default, {
-    TResult Function(U? content, int? statusCode, String? message)? error,
+    TResult? Function(U? content, int? statusCode, String? message)? error,
   }) {
     return $default?.call(
         content, statusCode, headers, isRedirect, persistentConnection);
@@ -272,8 +277,8 @@ class _$ApiResponseData<T, U> implements ApiResponseData<T, U> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult Function(ApiResponseData<T, U> value)? $default, {
-    TResult Function(ApiResponseError<T, U> value)? error,
+    TResult? Function(ApiResponseData<T, U> value)? $default, {
+    TResult? Function(ApiResponseError<T, U> value)? error,
   }) {
     return $default?.call(this);
   }
@@ -300,12 +305,13 @@ abstract class ApiResponseData<T, U> implements ApiResponse<T, U> {
       required final bool isRedirect,
       required final bool persistentConnection}) = _$ApiResponseData<T, U>;
 
-  T? get content => throw _privateConstructorUsedError;
   @override
-  int? get statusCode => throw _privateConstructorUsedError;
-  Map<String, String> get headers => throw _privateConstructorUsedError;
-  bool get isRedirect => throw _privateConstructorUsedError;
-  bool get persistentConnection => throw _privateConstructorUsedError;
+  T? get content;
+  @override
+  int? get statusCode;
+  Map<String, String> get headers;
+  bool get isRedirect;
+  bool get persistentConnection;
   @override
   @JsonKey(ignore: true)
   _$$ApiResponseDataCopyWith<T, U, _$ApiResponseData<T, U>> get copyWith =>
@@ -319,21 +325,19 @@ abstract class _$$ApiResponseErrorCopyWith<T, U, $Res>
           $Res Function(_$ApiResponseError<T, U>) then) =
       __$$ApiResponseErrorCopyWithImpl<T, U, $Res>;
   @override
+  @useResult
   $Res call({U? content, int? statusCode, String? message});
 }
 
 /// @nodoc
 class __$$ApiResponseErrorCopyWithImpl<T, U, $Res>
-    extends _$ApiResponseCopyWithImpl<T, U, $Res>
+    extends _$ApiResponseCopyWithImpl<T, U, $Res, _$ApiResponseError<T, U>>
     implements _$$ApiResponseErrorCopyWith<T, U, $Res> {
   __$$ApiResponseErrorCopyWithImpl(_$ApiResponseError<T, U> _value,
       $Res Function(_$ApiResponseError<T, U>) _then)
-      : super(_value, (v) => _then(v as _$ApiResponseError<T, U>));
+      : super(_value, _then);
 
-  @override
-  _$ApiResponseError<T, U> get _value =>
-      super._value as _$ApiResponseError<T, U>;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? content = freezed,
@@ -341,15 +345,15 @@ class __$$ApiResponseErrorCopyWithImpl<T, U, $Res>
     Object? message = freezed,
   }) {
     return _then(_$ApiResponseError<T, U>(
-      content: content == freezed
+      content: freezed == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as U?,
-      statusCode: statusCode == freezed
+      statusCode: freezed == statusCode
           ? _value.statusCode
           : statusCode // ignore: cast_nullable_to_non_nullable
               as int?,
-      message: message == freezed
+      message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -380,20 +384,18 @@ class _$ApiResponseError<T, U> implements ApiResponseError<T, U> {
         (other.runtimeType == runtimeType &&
             other is _$ApiResponseError<T, U> &&
             const DeepCollectionEquality().equals(other.content, content) &&
-            const DeepCollectionEquality()
-                .equals(other.statusCode, statusCode) &&
-            const DeepCollectionEquality().equals(other.message, message));
+            (identical(other.statusCode, statusCode) ||
+                other.statusCode == statusCode) &&
+            (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(content),
-      const DeepCollectionEquality().hash(statusCode),
-      const DeepCollectionEquality().hash(message));
+  int get hashCode => Object.hash(runtimeType,
+      const DeepCollectionEquality().hash(content), statusCode, message);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$ApiResponseErrorCopyWith<T, U, _$ApiResponseError<T, U>> get copyWith =>
       __$$ApiResponseErrorCopyWithImpl<T, U, _$ApiResponseError<T, U>>(
           this, _$identity);
@@ -413,10 +415,10 @@ class _$ApiResponseError<T, U> implements ApiResponseError<T, U> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>(
-    TResult Function(T? content, int? statusCode, Map<String, String> headers,
+    TResult? Function(T? content, int? statusCode, Map<String, String> headers,
             bool isRedirect, bool persistentConnection)?
         $default, {
-    TResult Function(U? content, int? statusCode, String? message)? error,
+    TResult? Function(U? content, int? statusCode, String? message)? error,
   }) {
     return error?.call(content, statusCode, message);
   }
@@ -448,8 +450,8 @@ class _$ApiResponseError<T, U> implements ApiResponseError<T, U> {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>(
-    TResult Function(ApiResponseData<T, U> value)? $default, {
-    TResult Function(ApiResponseError<T, U> value)? error,
+    TResult? Function(ApiResponseData<T, U> value)? $default, {
+    TResult? Function(ApiResponseError<T, U> value)? error,
   }) {
     return error?.call(this);
   }
@@ -474,10 +476,11 @@ abstract class ApiResponseError<T, U> implements ApiResponse<T, U> {
       final int? statusCode,
       final String? message}) = _$ApiResponseError<T, U>;
 
-  U? get content => throw _privateConstructorUsedError;
   @override
-  int? get statusCode => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
+  U? get content;
+  @override
+  int? get statusCode;
+  String? get message;
   @override
   @JsonKey(ignore: true)
   _$$ApiResponseErrorCopyWith<T, U, _$ApiResponseError<T, U>> get copyWith =>

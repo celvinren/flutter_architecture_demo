@@ -10,10 +10,8 @@ dependencies:
   dart_frog: ^0.3.0
 
 dev_dependencies:
-  dart_code_metrics: ^5.7.0
   demo_analysis:
     path: ../packages/demo_analysis
-  dependency_validator: ^3.2.2
   mocktail: ^0.3.0
   test: ^1.24.1
   very_good_analysis: ^4.0.0+1

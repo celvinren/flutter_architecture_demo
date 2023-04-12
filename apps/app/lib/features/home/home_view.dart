@@ -87,6 +87,7 @@ class HomeView extends HookConsumerWidget {
             child: LocationListView(
               listViewController: viewModel.listViewController,
               jobs: viewModelState.jobs ?? [],
+              onTapCard: onTapCard,
             ),
           ),
           if (viewModelState.isLoading ?? false)

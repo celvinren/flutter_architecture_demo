@@ -1,17 +1,17 @@
 name: demo_utils_constants
 version: 0.0.1
-publish_to: 'none'
+publish_to: "none"
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ">=2.18.0 <3.0.0"
 
 dev_dependencies:
-    demo_analysis:
-      path: ../demo_analysis
-    dart_code_metrics: ^5.7.0
-    dependency_validator: ^3.2.2
-    very_good_analysis: ^4.0.0+1
-    build_runner: ^2.3.3
+  build_runner: ^2.3.3
+  dart_code_metrics: ^5.7.0
+  demo_analysis:
+    path: ../demo_analysis
+  dependency_validator: ^3.2.2
+  very_good_analysis: ^4.0.0+1
 dependencies:
-    freezed: ^2.3.2
-    freezed_annotation: ^2.2.0
+  freezed: ^2.3.2
+  freezed_annotation: ^2.2.0
