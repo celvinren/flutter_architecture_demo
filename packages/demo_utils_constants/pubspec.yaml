@@ -11,3 +11,7 @@ dev_dependencies:
     dart_code_metrics: ^5.7.0
     dependency_validator: ^3.2.2
     very_good_analysis: ^4.0.0+1
+    build_runner: ^2.3.3
+dependencies:
+    freezed: ^2.3.2
+    freezed_annotation: ^2.2.0
