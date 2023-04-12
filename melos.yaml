@@ -1,0 +1,121 @@
+name: flutter_goto_test
+
+packages:
+  - packages/**
+  - apps/**
+  - ./*
+
+scripts:
+  pub:get:
+    run: |
+      dart pub global run melos exec --fail-fast --  "flutter pub get"
+    description: Run `pub get` in all the packages
+
+  gen_l10n:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter gen-l10n
+    description: Run `flutter gen-l10n` for a specific package.
+    packageFilters:
+      dependsOn: flutter_localizations
+      
+  build_runner:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub run build_runner build --delete-conflicting-outputs
+    description: Run all build runner to generate code.
+    packageFilters:
+      dependsOn: freezed_annotation
+
+  watch_build_runner:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub run build_runner watch --delete-conflicting-outputs
+    description: Run 'build_runner watch' in code gen projects.
+    packageFilters:
+      dependsOn: freezed_annotation
+
+  # Quality
+  metrics:analyze:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub run dart_code_metrics:metrics analyze lib --fatal-style --fatal-performance --fatal-warnings --set-exit-on-violation-level=warning
+    description: Run all static analysis checks.
+
+  metrics:unused:code:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub run dart_code_metrics:metrics check-unused-code lib --fatal-unused
+    description: Run all static analysis checks.
+
+  metrics:unused:files:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub run dart_code_metrics:metrics check-unused-files lib --fatal-unused
+    description: Run all static analysis checks.
+
+  metrics:unnecessary:nullable:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub run dart_code_metrics:metrics check-unnecessary-nullable lib --fatal-found
+    description: Run all static analysis checks.
+
+  lint:analyze:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter analyze . --fatal-infos --no-pub
+    description: |
+      Run `flutter analyze` in all packages.
+       - Note: you can also rely on your IDEs Dart Analysis / Issues window.
+        
+  lint:dependency:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub run dependency_validator
+    description: |
+      Run `flutter pub run dependency_validator` in all packages.
+       - Note: you can also rely on your IDEs Dart Analysis / Issues window.
+
+  lint:format:check:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        dart format -o none --summary none --set-exit-if-changed .
+    description: |
+      Format all check.
+
+  lint:format:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        dart format .
+    description: |
+      Format all.
+
+  test:update_goldens:
+    run: |
+      rm -rf `find packages/demo_ui -type d -name goldens` && \
+      rm -rf `find packages/demo_ui -type d -name failures` && \
+      melos exec --fail-fast -- \
+        flutter test --update-goldens --tags=golden > /dev/null
+    description: Run `flutter test --update-goldens --tags=golden` for a specific package.
+    packageFilters:
+      dependsOn: alchemist
+
+  test:golden:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        "flutter test --tags=golden --dart-define=CI=$CI"
+    description: Run all tests on golden projects.
+    packageFilters:
+      dependsOn: alchemist
+  
+  add:package:
+    run: |
+      dart pub global run melos exec --fail-fast -- \
+        flutter pub add dart_code_metrics --dev
+    description: |
+      Add package all.
+
+  flutter_clean:
+    run: melos exec --fail-fast -- \
+        "flutter clean"
+    description: Run `flutter clean` in all packages.
