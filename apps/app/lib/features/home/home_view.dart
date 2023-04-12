@@ -1,4 +1,6 @@
 import 'package:app/features/home/home_view_model.dart';
+import 'package:app/services/route_service.dart';
+import 'package:demo_data_models/demo_data_models.dart';
 import 'package:demo_ui/demo_ui.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +50,11 @@ class HomeView extends HookConsumerWidget {
         );
 
     void cleanSearching() => viewModel.cleanSearching();
+
+    void onTapCard(Job job) => ref.watch(routerServiceProvider).push(
+          '/map',
+          extra: job,
+        );
 
     return Scaffold(
       appBar: AppBar(

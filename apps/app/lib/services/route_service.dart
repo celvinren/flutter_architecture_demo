@@ -25,4 +25,7 @@ class RouteService {
   String get location => _router.location;
 
   void go(String location) => _router.go(location);
+
+  void push(String location, {Object? extra}) =>
+      _router.push(location, extra: extra);
 }
