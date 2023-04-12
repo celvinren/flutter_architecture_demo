@@ -1,0 +1,30 @@
+name: demo_theme
+publish_to: "none"
+version: 0.0.1
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  dart_code_metrics: ^5.7.0
+  demo_analysis:
+    path: ../demo_analysis
+  dependency_validator: ^3.2.2
+  # flutter_test:
+  #   sdk: flutter
+  very_good_analysis: ^4.0.0+1
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: inter
+      fonts:
+        - asset: fonts/inter/Inter-Bold.ttf
+        - asset: fonts/inter/Inter-ExtraBold.ttf
+        - asset: fonts/inter/Inter-Regular.ttf
+        - asset: fonts/inter/Inter-SemiBold.ttf
