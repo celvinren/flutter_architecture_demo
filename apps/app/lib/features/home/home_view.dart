@@ -1,4 +1,5 @@
 import 'package:app/features/home/home_view_model.dart';
+import 'package:app/features/home/widgets/brightness_toggle.dart';
 import 'package:app/services/route_service.dart';
 import 'package:demo_data_models/demo_data_models.dart';
 import 'package:demo_ui/demo_ui.dart';
@@ -61,6 +62,9 @@ class HomeView extends HookConsumerWidget {
       appBar: AppBar(
         title: const Text('Home'),
         centerTitle: true,
+        actions: const [
+          BrightnessToggle(),
+        ],
         bottom: PreferredSize(
           preferredSize: Size(
             MediaQuery.of(context).size.width,
