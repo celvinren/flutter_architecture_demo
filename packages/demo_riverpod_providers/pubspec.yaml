@@ -1,0 +1,21 @@
+name: demo_riverpod_providers
+version: 0.0.1
+publish_to: "none"
+
+environment:
+  sdk: ">=2.18.0 <3.0.0"  
+
+dependencies:
+  demo_http_api:
+    path: ../demo_http_api
+  demo_repositories:
+    path: ../demo_repositories
+  riverpod: ^2.3.4
+
+dev_dependencies:
+  dart_code_metrics: ^5.7.0
+  demo_analysis:
+    path: ../demo_analysis
+  dependency_validator: ^3.2.2
+  very_good_analysis: ^4.0.0+1
+
