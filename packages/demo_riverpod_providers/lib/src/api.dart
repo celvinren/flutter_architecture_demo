@@ -2,32 +2,33 @@
 
 import 'package:demo_http_api/demo_http_api.dart';
 import 'package:demo_repositories/demo_repositories.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final _apiClientProvider = Provider.autoDispose<ApiClient>(
-  (final ref) {
-    const apiKey = String.fromEnvironment('API_KEY');
-    const baseURL = String.fromEnvironment('BACKEND_BASE_URL');
+part 'api.g.dart';
 
-    return ApiClientImpl(
-      baseURL: baseURL,
-      port: 8080,
-      headers: () async {
-        return <String, String>{
-          'Content-Type': 'application/json',
-          'api-key': apiKey,
-        };
-      },
-    );
-  },
-);
+@riverpod
+ApiClientImpl _apiClient(_ApiClientRef ref) {
+  const apiKey = String.fromEnvironment('API_KEY');
+  const baseURL = String.fromEnvironment('BACKEND_BASE_URL');
 
-final _jobApiProvider = Provider.autoDispose<JobApi>(
-  (final ref) => JobApi(apiClient: ref.watch(_apiClientProvider)),
-);
+  return ApiClientImpl(
+    baseURL: baseURL,
+    port: 8080,
+    headers: () async {
+      return <String, String>{
+        'Content-Type': 'application/json',
+        'api-key': apiKey,
+      };
+    },
+  );
+}
 
-final jobRepositoryProvider = Provider.autoDispose<JobRepository>(
-  (final ref) => JobRepository(
-    jobApi: ref.watch(_jobApiProvider),
-  ),
-);
+@riverpod
+JobApi _jobApi(_JobApiRef ref) {
+  return JobApi(apiClient: ref.watch(_apiClientProvider));
+}
+
+@riverpod
+JobRepository jobRepository(JobRepositoryRef ref) {
+  return JobRepository(jobApi: ref.watch(_jobApiProvider));
+}

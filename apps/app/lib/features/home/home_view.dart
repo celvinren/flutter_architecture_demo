@@ -1,44 +1,48 @@
-import 'package:app/features/home/home_view_model.dart';
 import 'package:app/features/home/widgets/brightness_toggle.dart';
 import 'package:app/services/route_service.dart';
 import 'package:demo_data_models/demo_data_models.dart';
+import 'package:demo_riverpod_providers/demo_riverpod_providers.dart';
 import 'package:demo_ui/demo_ui.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'home_view.g.dart';
+
+const _limit = 5;
 
 class HomeView extends HookConsumerWidget {
   const HomeView({super.key});
+  static const searchBarHeight = 60.0;
 
   @override
   Widget build(BuildContext context, final WidgetRef ref) {
-    final theme = Theme.of(context);
-    final viewModelState = ref.watch(homeViewModelProvider);
-    final viewModel = ref.watch(homeViewModelProvider.notifier);
-    final scaffoldMessenger = ScaffoldMessenger.of(context);
-    const loadingIndicatorColorOpacity = 0.5;
-    const searchBarHeight = 60.0;
+    final result = ref.watch(
+      fetchJobsProvider,
+    );
+    final listViewController = ref.watch(
+      listViewControllerProvider,
+    );
 
-    Future<void> fetchJobs() async {
-      final failure = await viewModel.fetchJobs();
-      if (failure != null) {
-        scaffoldMessenger.showSnackBar(
-          SnackBar(
-            content: Text(
-              failure.message ?? '',
-              style: theme.textTheme.bodyLarge,
-            ),
-          ),
-        );
-      }
-    }
+    final searchController = ref.watch(
+      searchControllerProvider,
+    );
+
+    final pageNumberController = ref.watch(
+      pageNumberProvider.notifier,
+    );
 
     useEffect(
       () {
-        Future.microtask(
-          fetchJobs,
-        );
+        ref
+            .read(
+              fetchJobsProvider.notifier,
+            )
+            .fetchJobs(
+              searchText: searchController.text,
+            );
 
         return null;
       },
@@ -48,12 +52,29 @@ class HomeView extends HookConsumerWidget {
     void searchJobs(String text) => EasyDebounce.debounce(
           'search',
           const Duration(milliseconds: 1000),
-          () async => viewModel.fetchJobs(text: text, isSearching: true),
+          () async {
+            ref.invalidate(fetchJobsProvider);
+            pageNumberController.zero();
+
+            return ref
+                .read(
+                  fetchJobsProvider.notifier,
+                )
+                .fetchJobs(
+                  searchText: text,
+                );
+          },
         );
 
-    void cleanSearching() => viewModel.cleanSearching();
+    void cleanSearching() {
+      ref.invalidate(fetchJobsProvider);
+      pageNumberController.zero();
+      ref
+          .read(fetchJobsProvider.notifier)
+          .fetchJobs(searchText: searchController.text);
+    }
 
-    void onTapCard(Job job) => ref.watch(routerServiceProvider).push(
+    void onTapCard(Job job) => ref.watch(routeServiceProvider).push(
           '/map',
           extra: job,
         );
@@ -73,7 +94,7 @@ class HomeView extends HookConsumerWidget {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: SearchTextField(
-              controller: viewModel.searchController,
+              controller: searchController,
               onChanged: searchJobs,
               onClear: cleanSearching,
             ),
@@ -85,20 +106,94 @@ class HomeView extends HookConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: LocationListView(
-              listViewController: viewModel.listViewController,
-              jobs: viewModelState.jobs ?? [],
+              listViewController: listViewController,
+              jobs: result,
               onTapCard: onTapCard,
             ),
           ),
-          if (viewModelState.isLoading ?? false)
-            ColoredBox(
-              color: Colors.black.withOpacity(loadingIndicatorColorOpacity),
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
         ],
       ),
     );
+  }
+}
+
+@riverpod
+TextEditingController searchController(
+  SearchControllerRef _,
+) {
+  return TextEditingController();
+}
+
+@riverpod
+class ListViewController extends _$ListViewController {
+  @override
+  ScrollController build() {
+    final listViewController = ScrollController();
+    listViewController.addListener(() {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      if (listViewController.position.pixels >
+          listViewController.position.maxScrollExtent - 8) {
+        ref.read(pageNumberProvider.notifier).increment();
+
+        final pageNumber = ref.read(pageNumberProvider);
+        final searchController = ref.watch(
+          searchControllerProvider,
+        );
+
+        ref
+            .read(
+              fetchJobsProvider.notifier,
+            )
+            .fetchJobs(
+              searchText: searchController.text,
+              skip: pageNumber * _limit,
+            );
+      }
+    });
+
+    return listViewController;
+  }
+}
+
+@riverpod
+class PageNumber extends _$PageNumber {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void increment() {
+    state++;
+  }
+
+  void zero() {
+    state = 0;
+  }
+}
+
+@riverpod
+class FetchJobs extends _$FetchJobs {
+  @override
+  List<Job> build() {
+    return <Job>[];
+  }
+
+  Future<void> fetchJobs({
+    String? searchText,
+    int limit = _limit,
+    int skip = 0,
+  }) async {
+    final jobs = await ref
+        .watch(
+          jobRepositoryProvider,
+        )
+        .fetchJobs(
+          searchText: searchText,
+          limit: limit,
+          skip: skip,
+        );
+
+    state += jobs ?? [];
   }
 }

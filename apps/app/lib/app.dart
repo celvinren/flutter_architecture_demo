@@ -17,10 +17,10 @@ class App extends HookConsumerWidget {
       darkTheme: _theme.dark,
       themeMode: darkMode ? ThemeMode.dark : ThemeMode.light,
       routeInformationProvider:
-          ref.watch(routerServiceProvider).routeInformationProvider,
-      routerDelegate: ref.watch(routerServiceProvider).routerDelegate,
+          ref.watch(routeServiceProvider).routeInformationProvider,
+      routerDelegate: ref.watch(routeServiceProvider).routerDelegate,
       routeInformationParser:
-          ref.watch(routerServiceProvider).routeInformationParser,
+          ref.watch(routeServiceProvider).routeInformationParser,
     );
   }
 }

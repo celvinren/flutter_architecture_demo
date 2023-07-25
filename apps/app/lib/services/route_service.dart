@@ -1,14 +1,16 @@
 // ignore_for_file: unnecessary-nullable
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'routes.dart';
 
-final routerServiceProvider = Provider<RouteService>((ref) => RouteService());
+part 'route_service.g.dart';
 
-class RouteService {
-  RouteService();
+@riverpod
+class RouteService extends _$RouteService {
+  @override
+  RouteService build() => RouteService();
 
   RouteInformationProvider get routeInformationProvider =>
       _router.routeInformationProvider;

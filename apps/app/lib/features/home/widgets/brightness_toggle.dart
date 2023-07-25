@@ -10,7 +10,7 @@ class BrightnessToggle extends HookConsumerWidget {
     final darkMode = ref.watch(darkModeProvider);
 
     return IconButton(
-      onPressed: () => ref.read(darkModeProvider.state).state = !darkMode,
+      onPressed: () => ref.read(darkModeProvider.notifier).toggle(),
       icon: Icon(
         darkMode ? Icons.dark_mode : Icons.light_mode,
         color: Theme.of(context).colorScheme.onBackground,

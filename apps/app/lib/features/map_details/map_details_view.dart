@@ -6,22 +6,22 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import 'map_details_view_model.dart';
+part 'map_details_view.g.dart';
 
 class MapDetailsView extends HookConsumerWidget {
   const MapDetailsView({required this.job, super.key});
-
+  static const customWindowOffSet = 60.0;
+  static const markerHeight = 200.0;
+  static const markerWidth = 350.0;
+  static const zoomLevel = 12.0;
   final Job? job;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final viewModel = ref.watch(mapDetailsViewModelProvider.notifier);
+    final customInfoMapController = ref.watch(customInfoMapControllerProvider);
 
     final firstJobLocation = job?.location?.first;
-    const customWindowOffSet = 60.0;
-    const markerHeight = 200.0;
-    const markerWidth = 350.0;
-    const zoomLevel = 12.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -59,11 +59,11 @@ class MapDetailsView extends HookConsumerWidget {
               ),
             },
             onTap: (final position) =>
-                viewModel.customInfoWindowController.hideInfoWindow?.call(),
+                customInfoMapController.hideInfoWindow?.call(),
             onCameraMove: (position) =>
-                viewModel.customInfoWindowController.onCameraMove?.call(),
-            onMapCreated: (final controller) => viewModel
-                .customInfoWindowController.googleMapController = controller,
+                customInfoMapController.onCameraMove?.call(),
+            onMapCreated: (final controller) =>
+                customInfoMapController.googleMapController = controller,
             markers: job?.location
                     ?.map(
                       (e) => Marker(
@@ -72,9 +72,8 @@ class MapDetailsView extends HookConsumerWidget {
                           e.lat ?? 0,
                           e.lng ?? 0,
                         ),
-                        onTap: () => viewModel
-                            .customInfoWindowController.addInfoWindow
-                            ?.call(
+                        onTap: () =>
+                            customInfoMapController.addInfoWindow?.call(
                           LocationCard(
                             cardName: job?.jobTitle ?? '',
                             cardStatus: job?.jobStatus ?? '',
@@ -98,7 +97,7 @@ class MapDetailsView extends HookConsumerWidget {
                 {},
           ),
           CustomInfoWindow(
-            controller: viewModel.customInfoWindowController,
+            controller: customInfoMapController,
             height: markerHeight,
             width: markerWidth,
             offset: customWindowOffSet,
@@ -107,4 +106,11 @@ class MapDetailsView extends HookConsumerWidget {
       ),
     );
   }
+}
+
+@riverpod
+CustomInfoWindowController customInfoMapController(
+  CustomInfoMapControllerRef _,
+) {
+  return CustomInfoWindowController();
 }
