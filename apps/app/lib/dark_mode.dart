@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'providers.g.dart';
+part 'dark_mode.g.dart';
 
 @riverpod
 class DarkMode extends _$DarkMode {

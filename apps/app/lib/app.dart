@@ -1,4 +1,4 @@
-import 'package:app/providers.dart';
+import 'package:app/dark_mode.dart';
 import 'package:app/services/route_service.dart';
 import 'package:demo_theme/demo_theme.dart';
 import 'package:flutter/material.dart';

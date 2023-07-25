@@ -111,6 +111,5 @@ class MapDetailsView extends HookConsumerWidget {
 @riverpod
 CustomInfoWindowController customInfoMapController(
   CustomInfoMapControllerRef _,
-) {
-  return CustomInfoWindowController();
-}
+) =>
+    CustomInfoWindowController();

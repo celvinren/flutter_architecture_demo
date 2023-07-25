@@ -24,16 +24,8 @@ void main() {
     test('should get jobs from the internet', () async {
       final jobRepository = JobRepository(jobApi: JobApi(apiClient: apiClient));
       final jobs = await jobRepository.fetchJobs(searchText: 'flutter');
-      jobs.when(
-        left: (failure) {
-          print(failure.message);
-        },
-        right: (jobs) {
-          expect(jobs.isNotEmpty, true);
-          print(jobs);
-          print(jobs.length);
-        },
-      );
+
+      expect(jobs?.isNotEmpty ?? false, true);
     });
   });
 }

@@ -120,9 +120,8 @@ class HomeView extends HookConsumerWidget {
 @riverpod
 TextEditingController searchController(
   SearchControllerRef _,
-) {
-  return TextEditingController();
-}
+) =>
+    TextEditingController();
 
 @riverpod
 class ListViewController extends _$ListViewController {
@@ -131,9 +130,10 @@ class ListViewController extends _$ListViewController {
     final listViewController = ScrollController();
     listViewController.addListener(() {
       FocusManager.instance.primaryFocus?.unfocus();
+      const gap = 8.0;
 
       if (listViewController.position.pixels >
-          listViewController.position.maxScrollExtent - 8) {
+          listViewController.position.maxScrollExtent - gap) {
         ref.read(pageNumberProvider.notifier).increment();
 
         final pageNumber = ref.read(pageNumberProvider);
@@ -159,25 +159,17 @@ class ListViewController extends _$ListViewController {
 @riverpod
 class PageNumber extends _$PageNumber {
   @override
-  int build() {
-    return 0;
-  }
+  int build() => 0;
 
-  void increment() {
-    state++;
-  }
+  void increment() => state++;
 
-  void zero() {
-    state = 0;
-  }
+  void zero() => state = 0;
 }
 
 @riverpod
 class FetchJobs extends _$FetchJobs {
   @override
-  List<Job> build() {
-    return <Job>[];
-  }
+  List<Job> build() => <Job>[];
 
   Future<void> fetchJobs({
     String? searchText,

@@ -23,7 +23,7 @@ final searchControllerProvider =
 
 typedef SearchControllerRef = AutoDisposeProviderRef<TextEditingController>;
 String _$listViewControllerHash() =>
-    r'30433092ac9ce2ddd74a5aeb33f33c565fe8027c';
+    r'a70a3740b19fa87f6737a3379448eb458d57fdfd';
 
 /// See also [ListViewController].
 @ProviderFor(ListViewController)
