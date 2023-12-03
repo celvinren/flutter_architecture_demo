@@ -19,7 +19,7 @@ class MapDetailsView extends HookConsumerWidget {
   final Job? job;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final customInfoMapController = ref.watch(customInfoMapControllerProvider);
+    final customInfoMapController = ref.read(customInfoMapControllerProvider);
 
     final firstJobLocation = job?.location?.first;
 

@@ -7,7 +7,7 @@ part of 'map_details_view.dart';
 // **************************************************************************
 
 String _$customInfoMapControllerHash() =>
-    r'e79b39f4b364297011911c461709354cc688cb2e';
+    r'1352227f68c51b3d033fa21f35f635e7a9f05317';
 
 /// See also [customInfoMapController].
 @ProviderFor(customInfoMapController)

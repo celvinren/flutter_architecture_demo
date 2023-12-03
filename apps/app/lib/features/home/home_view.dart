@@ -19,65 +19,31 @@ class HomeView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, final WidgetRef ref) {
-    final result = ref.watch(
-      fetchJobsProvider,
-    );
-    final listViewController = ref.watch(
-      listViewControllerProvider,
-    );
+    final jobs = ref.watch(fetchJobsProvider);
 
-    final searchController = ref.watch(
-      searchControllerProvider,
-    );
+    final searchController = useTextEditingController();
 
-    final pageNumberController = ref.watch(
-      pageNumberProvider.notifier,
-    );
+    final listViewController = useScrollController();
+
+    Future<void> onScrollChanged() async {
+      FocusManager.instance.primaryFocus?.unfocus();
+
+      if (listViewController.position.pixels ==
+          listViewController.position.maxScrollExtent) {
+        await ref
+            .read(fetchJobsProvider.notifier)
+            .fetchJobs(searchText: searchController.text);
+      }
+    }
 
     useEffect(
       () {
-        ref
-            .read(
-              fetchJobsProvider.notifier,
-            )
-            .fetchJobs(
-              searchText: searchController.text,
-            );
+        listViewController.addListener(onScrollChanged);
 
-        return null;
+        return () => listViewController.removeListener(onScrollChanged);
       },
-      [],
+      [listViewController],
     );
-
-    void searchJobs(String text) => EasyDebounce.debounce(
-          'search',
-          const Duration(milliseconds: 1000),
-          () async {
-            ref.invalidate(fetchJobsProvider);
-            pageNumberController.zero();
-
-            return ref
-                .read(
-                  fetchJobsProvider.notifier,
-                )
-                .fetchJobs(
-                  searchText: text,
-                );
-          },
-        );
-
-    void cleanSearching() {
-      ref.invalidate(fetchJobsProvider);
-      pageNumberController.zero();
-      ref
-          .read(fetchJobsProvider.notifier)
-          .fetchJobs(searchText: searchController.text);
-    }
-
-    void onTapCard(Job job) => ref.watch(routeServiceProvider).push(
-          '/map',
-          extra: job,
-        );
 
     return Scaffold(
       appBar: AppBar(
@@ -95,97 +61,94 @@ class HomeView extends HookConsumerWidget {
             padding: const EdgeInsets.all(10),
             child: SearchTextField(
               controller: searchController,
-              onChanged: searchJobs,
-              onClear: cleanSearching,
+              onChanged: (value) => EasyDebounce.debounce(
+                'search',
+                const Duration(milliseconds: 1000),
+                () {
+                  ref.read(_searchQueryProvider.notifier).set(value);
+                },
+              ),
+              onClear: () => ref.read(_searchQueryProvider.notifier).set(null),
             ),
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            child: LocationListView(
-              listViewController: listViewController,
-              jobs: result,
-              onTapCard: onTapCard,
-            ),
+      body: jobs.when(
+        data: (jobs) {
+          if (jobs.isEmpty) {
+            return const Center(
+              child: Text('No jobs found'),
+            );
+          }
+
+          return Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                child: LocationListView(
+                  listViewController: listViewController,
+                  jobs: jobs,
+                  onTapCard: (job) => ref.read(routeServiceProvider).push(
+                        '/map',
+                        extra: job,
+                      ),
+                ),
+              ),
+            ],
+          );
+        },
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (error, stackTrace) => Center(
+          child: Text(
+            error.toString(),
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
 @riverpod
-TextEditingController searchController(
-  SearchControllerRef _,
-) =>
-    TextEditingController();
-
-@riverpod
-class ListViewController extends _$ListViewController {
+class _SearchQuery extends _$SearchQuery {
   @override
-  ScrollController build() {
-    final listViewController = ScrollController();
-    listViewController.addListener(() {
-      FocusManager.instance.primaryFocus?.unfocus();
-      const gap = 8.0;
+  String? build() => null;
 
-      if (listViewController.position.pixels >
-          listViewController.position.maxScrollExtent - gap) {
-        ref.read(pageNumberProvider.notifier).increment();
-
-        final pageNumber = ref.read(pageNumberProvider);
-        final searchController = ref.watch(
-          searchControllerProvider,
-        );
-
-        ref
-            .read(
-              fetchJobsProvider.notifier,
-            )
-            .fetchJobs(
-              searchText: searchController.text,
-              skip: pageNumber * _limit,
-            );
-      }
-    });
-
-    return listViewController;
-  }
-}
-
-@riverpod
-class PageNumber extends _$PageNumber {
-  @override
-  int build() => 0;
-
-  void increment() => state++;
-
-  void zero() => state = 0;
+  void set(String? value) => state = value;
 }
 
 @riverpod
 class FetchJobs extends _$FetchJobs {
+  static int _pageNumber = 0;
   @override
-  List<Job> build() => <Job>[];
+  Future<List<Job>> build() async {
+    final searchQuery = ref.watch(_searchQueryProvider);
+    final jobs = await ref.watch(jobRepositoryProvider).fetchJobs(
+          limit: _limit,
+          searchText: searchQuery,
+        );
+
+    return jobs ?? [];
+  }
 
   Future<void> fetchJobs({
     String? searchText,
     int limit = _limit,
-    int skip = 0,
   }) async {
-    final jobs = await ref
-        .watch(
-          jobRepositoryProvider,
-        )
-        .fetchJobs(
+    _pageNumber++;
+    final jobs = await ref.watch(jobRepositoryProvider).fetchJobs(
           searchText: searchText,
           limit: limit,
-          skip: skip,
+          skip: _pageNumber * limit,
         );
 
-    state += jobs ?? [];
+    state = jobs != null && jobs.isNotEmpty
+        ? AsyncData((state.value ?? []) + jobs)
+        : state;
+  }
+
+  void resetPageNumber() {
+    _pageNumber = 0;
   }
 }
